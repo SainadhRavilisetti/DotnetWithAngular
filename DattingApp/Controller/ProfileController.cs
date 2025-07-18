@@ -5,9 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DattingApp.Controller
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProfileController(ProfileDB context) : ControllerBase
+    public class ProfileController(ProfileDB context) : MainController
     {
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<Profile>>> GetUsers()
