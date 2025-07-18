@@ -11,8 +11,9 @@ builder.Services.AddControllers();
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
+builder.Services.AddCors();
 var app = builder.Build();
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200", "https://localhost:4200"));
 app.MapControllers();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
