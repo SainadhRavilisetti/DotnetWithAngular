@@ -2,27 +2,61 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using DattingApp.Data;
+using DattingApp.DTO_Classes;
+using DattingApp.Interfaces;
+using DattingApp.Services;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DattingApp.Controller;
 
-public class AccountController(ProfileDB context) : MainController
+public class AccountController(ProfileDB context,TokenInterface tokenInterface) : MainController
 {
     [HttpPost("register")]
-    public async Task<ActionResult<Profile>> Regiter(string email, string name ,string password,int id=0)
+    public async Task<ActionResult<User_DTO>> Regiter(Profile_DTO profile_)
     {
+        if (await EmailExits(profile_.Email)) return BadRequest("Email Taken");
         using var hash = new HMACSHA512();
-        var user = new Profile
+        var profile = new Profile
         {
-            Name = name,
-            Email = email,
-            Password = hash.ComputeHash(Encoding.UTF8.GetBytes(password)),
+            Name = profile_.Name,
+            Email = profile_.Email,
+            Password =hash.ComputeHash(Encoding.UTF8.GetBytes(profile_.Password)),
             Passwordsalt = hash.Key
 
         };
-        context.profiles.Add(user);
+        context.profiles.Add(profile);
         await context.SaveChangesAsync();
-        return user;
+        return new User_DTO
+        {
+            Id = profile.Id,
+            Name = profile.Name,
+            Email = profile.Email,
+            token=tokenInterface.CreateToken(profile)
+        };
     }
-
+    [HttpPost("login")]
+    public async Task<ActionResult<User_DTO>> Login(Login_DTO login_)
+    {
+        var profile = await context.profiles.SingleOrDefaultAsync(x => x.Email == login_.Email);
+        if (profile == null) return Unauthorized("Invalid Email address");
+        using var hash = new HMACSHA512(profile.Passwordsalt);
+        var computehash = hash.ComputeHash(Encoding.UTF8.GetBytes(login_.Password));
+        for (int i = 0; i < computehash.Length; i++)
+        {
+            if (computehash[i] != profile.Password[i]) return Unauthorized("Invalid Password");
+        }
+        return new User_DTO
+        {
+            Id = profile.Id,
+            Name = profile.Name,
+            Email = profile.Email,
+            token=tokenInterface.CreateToken(profile)
+        };
+    }
+    public async Task<bool> EmailExits(string Email)
+    {
+        return await context.profiles.AnyAsync(x => x.Email.ToLower() == Email.ToLower());
+    } 
 }

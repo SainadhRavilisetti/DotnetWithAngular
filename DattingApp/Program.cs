@@ -1,4 +1,6 @@
 using DattingApp.Data;
+using DattingApp.Interfaces;
+using DattingApp.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +9,7 @@ builder.Services.AddDbContext<ProfileDB>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddControllers();
-
+builder.Services.AddScoped<TokenInterface, TokenService>()  ;
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
