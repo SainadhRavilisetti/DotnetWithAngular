@@ -4,6 +4,7 @@ using System.Text;
 using DattingApp.Data;
 using DattingApp.DTO_Classes;
 using DattingApp.Interfaces;
+using DattingApp.Extensions;
 using DattingApp.Services;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DattingApp.Controller;
 
-public class AccountController(ProfileDB context,TokenInterface tokenInterface) : MainController
+public class AccountController(ProfileDB context, TokenInterface tokenInterface) : MainController
 {
     [HttpPost("register")]
     public async Task<ActionResult<User_DTO>> Regiter(Profile_DTO profile_)
@@ -22,19 +23,13 @@ public class AccountController(ProfileDB context,TokenInterface tokenInterface) 
         {
             Name = profile_.Name,
             Email = profile_.Email,
-            Password =hash.ComputeHash(Encoding.UTF8.GetBytes(profile_.Password)),
+            Password = hash.ComputeHash(Encoding.UTF8.GetBytes(profile_.Password)),
             Passwordsalt = hash.Key
 
         };
         context.profiles.Add(profile);
         await context.SaveChangesAsync();
-        return new User_DTO
-        {
-            Id = profile.Id,
-            Name = profile.Name,
-            Email = profile.Email,
-            token=tokenInterface.CreateToken(profile)
-        };
+        return profile.ToDTO(tokenInterface);
     }
     [HttpPost("login")]
     public async Task<ActionResult<User_DTO>> Login(Login_DTO login_)
@@ -47,16 +42,10 @@ public class AccountController(ProfileDB context,TokenInterface tokenInterface) 
         {
             if (computehash[i] != profile.Password[i]) return Unauthorized("Invalid Password");
         }
-        return new User_DTO
-        {
-            Id = profile.Id,
-            Name = profile.Name,
-            Email = profile.Email,
-            token=tokenInterface.CreateToken(profile)
-        };
+        return profile.ToDTO(tokenInterface);
     }
     public async Task<bool> EmailExits(string Email)
     {
         return await context.profiles.AnyAsync(x => x.Email.ToLower() == Email.ToLower());
-    } 
+    }
 }

@@ -1,4 +1,5 @@
 using DattingApp.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ namespace DattingApp.Controller
             var user = await context.profiles.ToListAsync();
             return user;
         }
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Profile>> GetUserById(string id) {
             var user = await context.profiles.FindAsync(id);
