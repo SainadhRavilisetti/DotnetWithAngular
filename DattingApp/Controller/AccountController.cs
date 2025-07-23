@@ -9,6 +9,7 @@ using DattingApp.Services;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DattingApp.Controller;
 
@@ -32,6 +33,7 @@ public class AccountController(ProfileDB context, TokenInterface tokenInterface)
         return profile.ToDTO(tokenInterface);
     }
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<ActionResult<User_DTO>> Login(Login_DTO login_)
     {
         var profile = await context.profiles.SingleOrDefaultAsync(x => x.Email == login_.Email);
