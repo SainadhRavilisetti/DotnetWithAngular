@@ -32,7 +32,7 @@ export class App implements OnInit {
 
   async GetUsers(){
     try{
-      return lastValueFrom(this.http.get<User>('https://localhost:5002/api/Profile'));
+      return lastValueFrom(this.http.get<User[]>('https://localhost:5002/api/Profile'));
     }
     catch(error){
       console.log(error);
