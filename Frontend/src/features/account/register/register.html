@@ -5,14 +5,8 @@
       <input class="input w-full" name="email" [(ngModel)]="creds.email" placeholder="Email">
       <input class="input w-full" name="name" [(ngModel)]="creds.name" placeholder="Name">
        <input type="password" class="input w-full" name="password" [(ngModel)]="creds.password" placeholder="Password">
-      <select class="select w-full">
-        <option disabled selected>pick a profile</option>
-        @for (item of profilefromHome(); track $index) {
-          <option value="{{item.id}}">{{item.name}}</option>
-        }
-      </select>
        <div class="flex items-center justify-end gap-3">
-        <button class="btn">Cancel</button>
+        <button class="btn" (click)="cancel()" type="button">Cancel</button>
         <button class="btn btn-primary" type="submit">Register</button>
       </div>
     </form>

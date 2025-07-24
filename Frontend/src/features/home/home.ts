@@ -9,9 +9,8 @@ import { User } from '../../types/user';
   styleUrl: './home.css'
 })
 export class Home {
-@Input({required:true}) profilefromApp: User[]=[];
 protected rigisterMode=signal(false);
-showRegister(){
-  this.rigisterMode.set(true);
+showRegister(value:boolean){
+  this.rigisterMode.set(value);
 }
 }
