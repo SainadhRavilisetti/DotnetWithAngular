@@ -20,7 +20,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideAppInitializer(async () => {
       const initservice = inject(InitService);
-      return new Promise<void>((resolve) => {
+      return new Promise<void>(() => {
         setTimeout(async () => {
           try {
             return lastValueFrom(initservice.init());
