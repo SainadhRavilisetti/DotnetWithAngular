@@ -14,6 +14,7 @@ public static class Profile_Extensions
         {
             Id = profile.Id,
             Name = profile.Name,
+            imgUrl=profile.ImgUrl,
             Email = profile.Email,
             token=tokenInterface.CreateToken(profile)
         };

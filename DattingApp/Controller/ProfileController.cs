@@ -1,25 +1,29 @@
-using DattingApp.Data;
+using DattingApp.Entites;
+using DattingApp.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace DattingApp.Controller
 {
-    public class ProfileController(ProfileDB context) : MainController
+    [Authorize]
+    public class ProfileController(ImemberRepository imemberRepository) : MainController
     {
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Profile>>> GetUsers()
+        public async Task<ActionResult<IReadOnlyList<Profie_members>>> GetUsers()
         {
-            var user = await context.profiles.ToListAsync();
-            return user;
+            return Ok(await imemberRepository.GetMembersAsync());
         }
-        [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Profile>> GetUserById(string id) {
-            var user = await context.profiles.FindAsync(id);
+        public async Task<ActionResult<Profie_members>> GetUserById(string id)
+        {
+            var user = await imemberRepository.GetMembersByIdAsync(id);
             if (user == null) return NotFound();
             return user;
+        }
+        [HttpGet("{id}/photos")]
+        public async Task<ActionResult<IReadOnlyList<Photo>>> GetMemberPhoto(string id)
+        {
+            return Ok(imemberRepository.GetPhotosForMembersAsync(id));
         }
     }
 }

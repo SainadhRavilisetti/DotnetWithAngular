@@ -14,7 +14,7 @@ ILogger<ExceptionMIddleware> logger, IHostEnvironment env)
         {
             await next(httpContext);
         }
-        catch (Exception ex)
+        catch (Exception ex) 
         {
             logger.LogError(ex, "{message}", ex.Message);
             httpContext.Response.ContentType = "application/json";

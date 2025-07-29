@@ -13,7 +13,7 @@ protected error:ApiError;
 protected showdetails=false;
 private router=inject(Router);
 constructor(){
-const navigation=this.router.getCurrentNavigation();
+const navigation = this.router.getCurrentNavigation();
 this.error=navigation?.extras?.state?.['error']
 }
 detailsToggle(){

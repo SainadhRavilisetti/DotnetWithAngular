@@ -2,6 +2,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using DattingApp.Data;
+using DattingApp.Entites;
 using DattingApp.DTO_Classes;
 using DattingApp.Interfaces;
 using DattingApp.Extensions;

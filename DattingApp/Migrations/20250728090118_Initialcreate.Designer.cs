@@ -3,6 +3,7 @@ using System;
 using DattingApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DattingApp.Migrations
 {
     [DbContext(typeof(ProfileDB))]
-    partial class ProfileDBModelSnapshot : ModelSnapshot
+    [Migration("20250728090118_Initialcreate")]
+    partial class Initialcreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.7");
@@ -23,13 +26,6 @@ namespace DattingApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("MemberId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ProfileId")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("PublicId")
                         .HasColumnType("TEXT");
 
@@ -37,11 +33,12 @@ namespace DattingApp.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("membersId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("id");
 
-                    b.HasIndex("MemberId");
-
-                    b.HasIndex("ProfileId");
+                    b.HasIndex("membersId");
 
                     b.ToTable("photos");
                 });
@@ -72,9 +69,6 @@ namespace DattingApp.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ImgUrl")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("LastActive")
                         .HasColumnType("TEXT");
 
@@ -93,14 +87,12 @@ namespace DattingApp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ImgUrl")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<byte[]>("Password")
@@ -118,17 +110,11 @@ namespace DattingApp.Migrations
 
             modelBuilder.Entity("DattingApp.Entites.Photo", b =>
                 {
-                    b.HasOne("DattingApp.Entites.Profie_members", "Member")
-                        .WithMany("Photos")
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("DattingApp.Entites.Profie_members", "members")
+                        .WithMany()
+                        .HasForeignKey("membersId");
 
-                    b.HasOne("DattingApp.Profile", null)
-                        .WithMany("photos")
-                        .HasForeignKey("ProfileId");
-
-                    b.Navigation("Member");
+                    b.Navigation("members");
                 });
 
             modelBuilder.Entity("DattingApp.Profile", b =>
@@ -144,15 +130,8 @@ namespace DattingApp.Migrations
 
             modelBuilder.Entity("DattingApp.Entites.Profie_members", b =>
                 {
-                    b.Navigation("Photos");
-
                     b.Navigation("User")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("DattingApp.Profile", b =>
-                {
-                    b.Navigation("photos");
                 });
 #pragma warning restore 612, 618
         }

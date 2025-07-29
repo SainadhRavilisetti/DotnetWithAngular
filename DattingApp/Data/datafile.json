@@ -1,0 +1,69 @@
+[
+{
+	"Id":"Lisa-id",
+	"Email":"lisa@gmail.com",
+	"Gender": "female",
+	"DateOfBirth":"1990-05-24",
+	"Name":"Lisa arinia",
+	"Created":"2025-03-09",
+	"LatActivity":"2025-05-21",
+	"Description": "The most beautiful looking for most beautiful heart",
+	"City": "Tokyo",
+	"Country": "Japan",
+	"ImgUrl":"https://randomuser.me/api/portraits/women/22.jpg"
+},
+{
+	"Id":"Berlina-id",
+	"Email":"Berlina@gmail.com",
+	"Gender": "female",
+	"DateOfBirth":"1995-05-24",
+	"Name":"Berlina balista",
+	"Created":"2025-05-09",
+	"LatActivity":"2025-07-21",
+	"Description": "Life is not spending :)",
+	"City": "Mery-Land",
+	"Country": "America",
+	"ImgUrl":"https://randomuser.me/api/portraits/women/72.jpg"
+},
+{
+	"Id":"John-id",
+	"Email":"John@gmail.com ",
+	"Gender": "male",
+	"DateOfBirth":"1994-05-24",
+	"Name":"Johnvik",
+	"Created":"2025-03-20",
+	"LatActivity":"2025-03-01",
+	"Description": "When nothing goes rigth,go left",
+	"City": "Kabul",
+	"Country": "Afghanistan",
+	"ImgUrl":"https://randomuser.me/api/portraits/men/60.jpg"
+},
+{
+	"Id":"Darvin-id",
+	"Email":"Darvin@gmail.com",
+	"Gender": "male",
+	"DateOfBirth":"1997-07-06",
+	"Name":"Darvin keslson",
+	"Created":"2025-06-14",
+	"LatActivity":"2025-07-28",
+	"Description": "heart is empty, go search around fill it up",
+	"City": "Yerevan",
+	"Country": "Armenia",
+	"ImgUrl":"https://randomuser.me/api/portraits/men/71.jpg"
+},
+{
+	"Id":"Likitha-id",
+	"Email":"Likitha@gmail.com",
+	"Gender": "female",
+	"DateOfBirth":"2001-06-13",
+	"Name":"Likitha Sai",
+	"Created":"2025-03-01",
+	"LatActivity":"2025-07-28",
+	"Description": "Success is more important!",
+	"City": "Bangalore",
+	"Country": "India",
+	"ImgUrl":"https://randomuser.me/api/portraits/women/60.jpg"
+}
+
+
+]

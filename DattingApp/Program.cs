@@ -2,9 +2,11 @@ using System.Text;
 using DattingApp.Data;
 using DattingApp.Interfaces;
 using DattingApp.MIddleware;
+using DattingApp.Migrations;
 using DattingApp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -15,6 +17,7 @@ builder.Services.AddDbContext<ProfileDB>(options =>
 });
 builder.Services.AddControllers();
 builder.Services.AddScoped<TokenInterface, TokenService>();
+builder.Services.AddScoped<ImemberRepository, MembersRepository>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
 {
@@ -64,7 +67,20 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 })
 .WithName("GetWeatherForecast");
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+try
+{
+    var context = services.GetRequiredService<ProfileDB>();
+    await context.Database.MigrateAsync();
+    await Seed.SeedUsers(context);
+}
+catch (Exception ex)
 
+{
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error has occured during the migration");
+}
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)

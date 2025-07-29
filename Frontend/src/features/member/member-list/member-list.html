@@ -1,7 +1,6 @@
-<div class="hero min-h-screen text-center">
-  <p class="text-5xl">
-    Hello this is member-List
-  </p>
-
+<div class="flex flex-col gap-3">
+ @for (item of members$| async; track item.id) {
+  <div>{{item.name}}</div>
+ }
 </div>
 
