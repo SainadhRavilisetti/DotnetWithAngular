@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import {inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { profile } from '../../types/profile';
@@ -12,17 +12,10 @@ export class MemberService {
   private http=inject(HttpClient);
   private baseUrl=environment.apiUrl;
   getMembers(){
-    return this.http.get<profile[]>(this.baseUrl+'Profile',this.getHttpOptions());
+    return this.http.get<profile[]>(this.baseUrl+'Profile');
   }
   getMemberById(id:string){
-    return this.http.get<profile>(this.baseUrl+'Profile/'+id,this.getHttpOptions());
-  }
-  private getHttpOptions(){
-    return {
-       headers:new HttpHeaders({
-        Authorization:'Bearer ' + this.accountService.currentuser()?.token
-       })
-    }
+    return this.http.get<profile>(this.baseUrl+'Profile/'+id);
   }
 
 }

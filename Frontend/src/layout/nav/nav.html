@@ -31,7 +31,7 @@ class="flex items-center max-h-16 gap-3 border-r-white border-r-2 pr-6">
   </ul>
   </div>
   }@else{
-    <form #LoginFrom="ngForm" (ngSubmit)="login()" class="flex gap-3 items-center">
+  <form #LoginFrom="ngForm" (ngSubmit)="login()" class="flex gap-3 items-center">
   <input [(ngModel)]="creds.Email" [ngModelOptions]="{standalone: true}" type="text" class="input" placeholder="Email">
   <input [(ngModel)]="creds.password" [ngModelOptions]="{standalone: true}" type="password" class="input" plcaholder="password">
   <button type="submit" class="btn">Login</button>
