@@ -1,42 +1,62 @@
 <header class="p-3 w-full fixed top-0 z-50 bg-gradient-to-r from-primary to-black">
-<div class="flex align-middle items-center px-10 mx-auto gap-6">
-<div class="text-white">
-  <a routerLink="/" routerLinkActive="text-accent"
-[routerLinkActiveOptions]="{exact:true}"
-class="flex items-center max-h-16 gap-3 border-r-white border-r-2 pr-6">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-  <path d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
-</svg>
- <h3 class="text-2xl font-semibold uppercase">Dating App</h3>
-</a>
-</div>
-<nav class="flex gap-3 my-2 uppercase text-lg text-white">
-  @if(accountService.currentuser()){
-      <a routerLink="/members" routerLinkActive="text-accent">Matches</a>
-      <a routerLink="/lists" routerLinkActive="text-accent">Lists</a>
-      <a routerLink="/messages" routerLinkActive="text-accent">Messages</a>
-  }
-  <a routerLink="/error" routerLinkActive="text-accent">Errors</a>
-</nav>
-<div class="flex align-middle ml-auto gap-3">
-  @if(accountService.currentuser(); as user){
-  <div class="dropdown dropdown-end">
-  <div tabindex="0" role="button" class="btn m-1 ">
-    <img [src]="user?.imgUrl||'/user.png'" alt="user avatar" class="w-10 h-10 rounded-full"/>
-    <span>{{user.name}}</span>
+  <div class="flex align-middle items-center px-10 mx-auto gap-6">
+    <div class="text-white">
+      <a routerLink="/" routerLinkActive="text-accent" [routerLinkActiveOptions]="{exact:true}"
+        class="flex items-center max-h-16 gap-3 border-r-white border-r-2 pr-6">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+          <path
+            d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
+        </svg>
+        <h3 class="text-2xl font-semibold uppercase">Dating App</h3>
+      </a>
+    </div>
+    <nav class="flex gap-3 my-2 uppercase text-lg text-white">
+      @if(accountService.currentuser()){
+      <a routerLink="/members" routerLinkActive="text-accent" [routerLinkActiveOptions]="{exact:true}">Matches</a>
+      <a routerLink="/lists" routerLinkActive="text-accent" [routerLinkActiveOptions]="{exact:true}">Lists</a>
+      <a routerLink="/messages" routerLinkActive="text-accent" [routerLinkActiveOptions]="{exact:true}">Messages</a>
+      }
+      <a routerLink="/error" routerLinkActive="text-accent">Errors</a>
+    </nav>
+    <div class="flex align-middle ml-auto gap-3">
+      <div class="dropdown mr-5 dropdown-end">
+        <div tabindex="1" class="flex flex-col justify-center align-middle text-white cursor pointer
+        uppercase text-xs">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="size-6 flex self-center">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+          </svg>
+          <span>{{selectedTheme()}}</span>
+        </div>
+        <ul tabindex="1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+          @for (item of themes; track $index) {
+            <li (click)="handleSelectTheme(item)">
+              <a>{{item}}</a>
+            </li>
+          }
+        </ul>
+      </div>
+      @if(accountService.currentuser(); as user){
+      <div class="dropdown dropdown-end">
+        <div tabindex="0" role="button" class="btn m-1 ">
+          <img [src]="user?.imgUrl||'/user.png'" alt="user avatar" class="w-10 h-10 rounded-full" />
+          <span>{{user.name}}</span>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+          <li><a>Edit Profile</a></li>
+          <li><a (click)="logout()">Log Out</a></li>
+        </ul>
+      </div>
+      }@else{
+      <form #LoginFrom="ngForm" (ngSubmit)="login()" class="flex gap-3 items-center">
+        <input [(ngModel)]="creds.Email" [ngModelOptions]="{standalone: true}" type="text" class="input"
+          placeholder="Email">
+        <input [(ngModel)]="creds.password" [ngModelOptions]="{standalone: true}" type="password" class="input"
+          plcaholder="password">
+        <button type="submit" class="btn">Login</button>
+      </form>
+      }
+    </div>
   </div>
-  <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-    <li><a>Edit Profile</a></li>
-    <li><a (click)="logout()">Log Out</a></li>
-  </ul>
-  </div>
-  }@else{
-  <form #LoginFrom="ngForm" (ngSubmit)="login()" class="flex gap-3 items-center">
-  <input [(ngModel)]="creds.Email" [ngModelOptions]="{standalone: true}" type="text" class="input" placeholder="Email">
-  <input [(ngModel)]="creds.password" [ngModelOptions]="{standalone: true}" type="password" class="input" plcaholder="password">
-  <button type="submit" class="btn">Login</button>
-  </form>
-  }
-</div>
-</div>
 </header>

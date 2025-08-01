@@ -4,10 +4,11 @@ import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, Ro
 import { filter, Observable } from 'rxjs';
 import { profile } from '../../../types/profile';
 import { AsyncPipe } from '@angular/common';
+import { AgePipe } from '../../../core/pipes/age-pipe';
 
 @Component({
   selector: 'app-member-detailed',
-  imports: [RouterLink, RouterLinkActive, RouterOutlet],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet,AgePipe],
   templateUrl: './member-detailed.html',
   styleUrl: './member-detailed.css'
 })
