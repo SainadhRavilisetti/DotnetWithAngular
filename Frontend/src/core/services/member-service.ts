@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Photos, profile } from '../../types/profile';
 import { AccountService } from './account-service';
@@ -8,9 +8,11 @@ import { AccountService } from './account-service';
   providedIn: 'root',
 })
 export class MemberService {
+
   private accountService = inject(AccountService);
   private http = inject(HttpClient);
   private baseUrl = environment.apiUrl;
+  editMode=signal(false);
   getMembers() {
     return this.http.get<profile[]>(this.baseUrl + 'Profile');
   }
