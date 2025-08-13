@@ -1,5 +1,6 @@
 import {
   Component,
+  HostListener,
   inject,
   OnDestroy,
   OnInit,
@@ -24,34 +25,49 @@ import { ToastService } from '../../../core/services/toast-service';
 })
 export class MembersProfile implements OnInit, OnDestroy {
   @ViewChild('editForm') editFrom?: NgForm;
+  @HostListener('window:beforeunload',['$event']) notify($event:BeforeUnloadEvent){
+    if(this.editFrom?.dirty){
+      $event.preventDefault();
+    }
+  }
+  private accountService=inject(AccountService);
   protected memberService = inject(MemberService);
   private toast = inject(ToastService);
-  private route = inject(ActivatedRoute);
-  protected member = signal<profile | undefined>(undefined);
   protected editableMember: EditableMember={
-    displayName:'',
+    Name:'',
     description:'',
     city:'',
     country:''
   };
 
   ngOnInit(): void {
-    this.route.parent?.data.subscribe((data) => {
-      this.member.set(data['member']);
-    });
     this.editableMember = {
-      displayName: this.member()?.name || '',
-      description: this.member()?.description || '',
-      city: this.member()?.city || '',
-      country: this.member()?.country || '',
+      Name: this.memberService.member()?.name || '',
+      description: this.memberService.member()?.description || '',
+      city: this.memberService.member()?.city || '',
+      country: this.memberService.member()?.country || '',
     };
   }
   updateProfile() {
-    if (!this.member()) return;
-    const updateMember = { ...this.member(), ...this.editableMember };
-    console.log(updateMember);
-    this.toast.success('profile updated successfully');
-    this.memberService.editMode.set(false);
+    if (!this.memberService.member()) return;
+    const updateMember = { ...this.memberService.member(), ...this.editableMember };
+    this.memberService.updatemembers(this.editableMember).subscribe({
+      next:()=>{
+        const currentUser=this.accountService.currentuser();
+        if(currentUser){
+           if(updateMember.name!==currentUser.name){
+            if(updateMember.name!=undefined){
+              currentUser.name=updateMember.name;
+              this.accountService.setcurrentuser(currentUser);
+            }
+          }
+        }
+        this.toast.success('profile updated successfully');
+        this.memberService.editMode.set(false);
+        this.memberService.member.set(updateMember as profile);
+        this.editFrom?.reset(updateMember);
+      }
+    })
   }
   ngOnDestroy(): void {
     if (this.memberService.editMode()) {

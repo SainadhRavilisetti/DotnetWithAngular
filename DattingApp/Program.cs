@@ -1,5 +1,6 @@
 using System.Text;
 using DattingApp.Data;
+using DattingApp.Helpers;
 using DattingApp.Interfaces;
 using DattingApp.MIddleware;
 using DattingApp.Migrations;
@@ -17,7 +18,9 @@ builder.Services.AddDbContext<ProfileDB>(options =>
 });
 builder.Services.AddControllers();
 builder.Services.AddScoped<TokenInterface, TokenService>();
+builder.Services.AddScoped<IphotoService, PhotoService>();
 builder.Services.AddScoped<ImemberRepository, MembersRepository>();
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
 {

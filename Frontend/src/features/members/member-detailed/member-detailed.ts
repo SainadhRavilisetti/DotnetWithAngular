@@ -18,15 +18,11 @@ protected memberService=inject(MemberService);
 private accountService=inject(AccountService);
 private route=inject(ActivatedRoute);
 private router=inject(Router);
-protected members=signal<profile | undefined>(undefined);
 protected title=signal<string | undefined>('Profile');
 protected isCurrentUser = computed(()=>{
   return this.accountService.currentuser()?.id===this.route.snapshot.paramMap.get('id');
 })
 ngOnInit(): void {
-  this.route.data.subscribe({
-    next:data=>this.members.set(data['member'])
-  })
   this.title.set(this.route.firstChild?.snapshot?.title);
   this.router.events.pipe(
     filter(event=>event instanceof NavigationEnd)

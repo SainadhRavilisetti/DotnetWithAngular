@@ -10,5 +10,6 @@ public interface ImemberRepository
     Task<IReadOnlyList<Profie_members>> GetMembersAsync();
     Task<Profie_members?> GetMembersByIdAsync(string Id);
     Task<IReadOnlyList<Photo>> GetPhotosForMembersAsync(string MemberId);
-
+    Task<Profie_members?> GetMemberForUpdate(string id);
+    Task GetMemberForUpdate(object value);
 }

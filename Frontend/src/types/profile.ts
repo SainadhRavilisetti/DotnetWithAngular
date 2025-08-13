@@ -19,7 +19,7 @@ export type Photos= {
   memberId: string
 }
 export type EditableMember={
-displayName:string;
+Name:string;
 description?:string;
 city:string;
 country:string;

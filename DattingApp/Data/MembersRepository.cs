@@ -8,11 +8,21 @@ namespace DattingApp.Data;
 
 public class MembersRepository(ProfileDB profileDB) : ImemberRepository
 {
+    public async Task<Profie_members?> GetMemberForUpdate(string id)
+    {
+        return await profileDB.profie_Members
+        .Include(x => x.User).SingleOrDefaultAsync(x => x.Id == id);
+    }
+
+    public Task GetMemberForUpdate(object value)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<IReadOnlyList<Profie_members>> GetMembersAsync()
     {
         return await profileDB.profie_Members.ToListAsync();
     }
-
     public async Task<Profie_members?> GetMembersByIdAsync(string Id)
     {
         return await profileDB.profie_Members.FindAsync(Id);
