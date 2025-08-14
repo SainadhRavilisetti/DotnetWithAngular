@@ -1,9 +1,11 @@
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using DattingApp.Data;
 using DattingApp.DTO_Classes;
 using DattingApp.Entites;
 using DattingApp.Extensions;
 using DattingApp.Interfaces;
+using DattingApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,12 +29,13 @@ namespace DattingApp.Controller
         [HttpGet("{id}/photos")]
         public async Task<ActionResult<IReadOnlyList<Photo>>> GetMemberPhoto(string id)
         {
-            return Ok(imemberRepository.GetPhotosForMembersAsync(id));
+            var photos = await imemberRepository.GetPhotosForMembersAsync(id);
+            return Ok(photos);
         }
         [HttpPut]
         public async Task<ActionResult> GetMemberForUpdate(UpdateProfile_DTO updateProfile_DTO)
         {
-            var memberId = User.GetMethod();
+            var memberId = User.GetMemberId();
             //if (memberId == null) return BadRequest("The id your looking can't Found!");
             var member = await imemberRepository.GetMemberForUpdate(memberId);
             if (member == null) return BadRequest("Count not get member!");
@@ -49,10 +52,27 @@ namespace DattingApp.Controller
 
         }
 
-        /*[HttpPost("add-photo")]
-        public async Task<ActionResult<Photo>> AddPhoto([FromForm]IFormFile file)
+        [HttpPost("add-photo")]
+        public async Task<ActionResult<Photo>> AddPhoto([FromForm] IFormFile file)
         {
             var member = await imemberRepository.GetMemberForUpdate(User.GetMemberId());
-        }*/
+            if (member == null) return BadRequest("Cannot update member");
+            var result = await iphotoService.UploadPhotoAsync(file);
+            if (result.Error != null) { return BadRequest(result.Error.Message); }
+            var photo = new Photo
+            {
+                Url = result.SecureUrl.AbsoluteUri,
+                PublicId = result.PublicId,
+                MemberId = User.GetMemberId()
+            };
+            if (member.ImgUrl == null)
+            {
+                member.ImgUrl = photo.Url;
+                member.User.ImgUrl = photo.Url;
+            }
+            member.Photos.Add(photo);
+            if (await imemberRepository.SaveAllAsync()) return photo;
+            return BadRequest("Problem adding photo");
+        }
     }
 }

@@ -1,7 +1,17 @@
-@if(photos$ | async;as photos){
+@if(!memberService.editMode()){
+@if(photos();as photos){
+@if(photos.length>0){
 <div class="grid grid-cols-4 auto-rows-min gap-3 p-5 h-[65vh] overflow-auto">
-  @for(photo of photoMocks;track $index){
+  @for(photo of photos;track $index){
   <img src="{{photo.url}}" alt="img of member" class="w-full rounded-lg">
   }
 </div>
+}
+@else{
+<p class="text-center text-gray-500">No photos available!</p>
+}
+}
+}
+@else {
+  <app-image-upload (uploadFile)="onUploadImage($event)" [loading]="loading()"></app-image-upload>
 }

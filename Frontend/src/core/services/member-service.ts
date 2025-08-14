@@ -12,7 +12,7 @@ export class MemberService {
   private accountService = inject(AccountService);
   private http = inject(HttpClient);
   private baseUrl = environment.apiUrl;
-  editMode=signal(false);
+  editMode=signal(true);
   member=signal<profile | null>(null);
   getMembers() {
     return this.http.get<profile[]>(this.baseUrl + 'Profile');
@@ -29,5 +29,10 @@ export class MemberService {
   }
   updatemembers(member:EditableMember){
     return this.http.put(this.baseUrl+'Profile',member);
+  }
+  uploadPhoto(file:File){
+    const fromData=new FormData();
+    fromData.append('file',file);
+    return this.http.post<Photos>(this.baseUrl+'Profile/add-photo',fromData);
   }
 }
