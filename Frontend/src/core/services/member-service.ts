@@ -12,7 +12,7 @@ export class MemberService {
   private accountService = inject(AccountService);
   private http = inject(HttpClient);
   private baseUrl = environment.apiUrl;
-  editMode=signal(true);
+  editMode=signal(false);
   member=signal<profile | null>(null);
   getMembers() {
     return this.http.get<profile[]>(this.baseUrl + 'Profile');
@@ -34,5 +34,11 @@ export class MemberService {
     const fromData=new FormData();
     fromData.append('file',file);
     return this.http.post<Photos>(this.baseUrl+'Profile/add-photo',fromData);
+  }
+  setMainPage(photo:Photos){
+    return this.http.put(this.baseUrl+'Profile/set-main-photo/'+photo.id,{});
+  }
+  deletePhoto(photoId:number){
+    return this.http.delete(this.baseUrl+'Profile/delete-photo/'+photoId);
   }
 }

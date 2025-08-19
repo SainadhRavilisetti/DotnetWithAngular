@@ -11,10 +11,12 @@ public class MembersRepository(ProfileDB profileDB) : ImemberRepository
     public async Task<Profie_members?> GetMemberForUpdate(string id)
     {
         return await profileDB.profie_Members
-        .Include(x => x.User).SingleOrDefaultAsync(x => x.Id == id);
+        .Include(x => x.User)
+        .Include(x => x.Photos).
+        SingleOrDefaultAsync(x => x.Id == id);
     }
 
-    public Task GetMemberForUpdate(object value)
+     public Task GetMemberForUpdate(object value)
     {
         throw new NotImplementedException();
     }

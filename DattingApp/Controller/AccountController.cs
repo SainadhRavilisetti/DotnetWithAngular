@@ -27,7 +27,6 @@ public class AccountController(ProfileDB context, TokenInterface tokenInterface)
             Email = profile_.Email,
             Password = hash.ComputeHash(Encoding.UTF8.GetBytes(profile_.Password)),
             Passwordsalt = hash.Key
-
         };
         context.profiles.Add(profile);
         await context.SaveChangesAsync();
