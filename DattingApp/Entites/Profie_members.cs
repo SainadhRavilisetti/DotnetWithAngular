@@ -6,7 +6,7 @@ namespace DattingApp.Entites;
 
 public class Profie_members
 {
-    public string Id { get; set; } = null!;
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     public DateOnly DateOfBirth { get; set; }
     public required string Name { get; set; }
     public DateTime Created { get; set; } = DateTime.UtcNow;

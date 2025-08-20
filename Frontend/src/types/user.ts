@@ -15,4 +15,8 @@ export type register={
   email:string;
   password:string;
   name:string;
+  gender:string;
+  city:string;
+  country:string;
+  dateOfBirth:string;
 }
