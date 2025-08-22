@@ -4,6 +4,7 @@ using DattingApp.Data;
 using DattingApp.DTO_Classes;
 using DattingApp.Entites;
 using DattingApp.Extensions;
+using DattingApp.Helpers;
 using DattingApp.Interfaces;
 using DattingApp.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -16,9 +17,9 @@ namespace DattingApp.Controller
   public class ProfileController(ImemberRepository imemberRepository, IphotoService iphotoService) : MainController
   {
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<Profie_members>>> GetUsers()
+    public async Task<ActionResult<IReadOnlyList<Profie_members>>> GetUsers([FromQuery] PaginationParams paginationParams)
     {
-      return Ok(await imemberRepository.GetMembersAsync());
+      return Ok(await imemberRepository.GetMembersAsync(paginationParams));
     }
     [HttpGet("{id}")]
     public async Task<ActionResult<Profie_members>> GetUserById(string id)

@@ -1,5 +1,6 @@
 using System;
 using DattingApp.Entites;
+using DattingApp.Helpers;
 using DattingApp.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -21,10 +22,17 @@ public class MembersRepository(ProfileDB profileDB) : ImemberRepository
         throw new NotImplementedException();
     }
 
-    public async Task<IReadOnlyList<Profie_members>> GetMembersAsync()
+    // public async Task<IReadOnlyList<Profie_members>> GetMembersAsync()
+    // {
+    //     return await profileDB.profie_Members.ToListAsync();
+    // }
+
+    public async Task<PaginatedResult<Profie_members>> GetMembersAsync(PaginationParams paginationParams)
     {
-        return await profileDB.profie_Members.ToListAsync();
+        var query = profileDB.profie_Members.AsQueryable();
+        return await PaginatedHelper.CreateAsync(query, paginationParams.PageNumber, paginationParams.PageSize);
     }
+
     public async Task<Profie_members?> GetMembersByIdAsync(string Id)
     {
         return await profileDB.profie_Members.FindAsync(Id);
