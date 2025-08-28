@@ -17,7 +17,7 @@ public class MembersRepository(ProfileDB profileDB) : ImemberRepository
         SingleOrDefaultAsync(x => x.Id == id);
     }
 
-     public Task GetMemberForUpdate(object value)
+    public Task GetMemberForUpdate(object value)
     {
         throw new NotImplementedException();
     }
@@ -27,10 +27,18 @@ public class MembersRepository(ProfileDB profileDB) : ImemberRepository
     //     return await profileDB.profie_Members.ToListAsync();
     // }
 
-    public async Task<PaginatedResult<Profie_members>> GetMembersAsync(PaginationParams paginationParams)
+    public async Task<PaginatedResult<Profie_members>> GetMembersAsync(MemberParams memberParams)
     {
         var query = profileDB.profie_Members.AsQueryable();
-        return await PaginatedHelper.CreateAsync(query, paginationParams.PageNumber, paginationParams.PageSize);
+        query = query.Where(x => x.Id != memberParams.CurrentMemberId);
+        if (memberParams.Gender != null)
+        {
+            query = query.Where(x => x.Gender == memberParams.Gender);
+        }
+        var minDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-memberParams.MaxAge - 1));
+        var maxDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-memberParams.MinAge));
+        query = query.Where(x => x.DateOfBirth >= minDob && x.DateOfBirth <= maxDob);
+        return await PaginatedHelper.CreateAsync(query, memberParams.PageNumber, memberParams.PageSize);
     }
 
     public async Task<Profie_members?> GetMembersByIdAsync(string Id)
@@ -43,10 +51,10 @@ public class MembersRepository(ProfileDB profileDB) : ImemberRepository
         .Where(x => x.Id == memberId)
         .SelectMany(x => x.Photos)
         .ToListAsync();
-    } 
+    }
     public async Task<bool> SaveAllAsync()
     {
-        return await profileDB.SaveChangesAsync() > 0; 
+        return await profileDB.SaveChangesAsync() > 0;
     }
     public void Update(Profie_members profie_Members)
     {

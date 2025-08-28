@@ -17,9 +17,10 @@ namespace DattingApp.Controller
   public class ProfileController(ImemberRepository imemberRepository, IphotoService iphotoService) : MainController
   {
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<Profie_members>>> GetUsers([FromQuery] PaginationParams paginationParams)
+    public async Task<ActionResult<IReadOnlyList<Profie_members>>> GetUsers([FromQuery] MemberParams memberParams)
     {
-      return Ok(await imemberRepository.GetMembersAsync(paginationParams));
+      memberParams.CurrentMemberId = User.GetMemberId();
+      return Ok(await imemberRepository.GetMembersAsync(memberParams));
     }
     [HttpGet("{id}")]
     public async Task<ActionResult<Profie_members>> GetUserById(string id)
@@ -46,8 +47,6 @@ namespace DattingApp.Controller
       member.City = updateProfile_DTO.City ?? member.City;
       member.Country = updateProfile_DTO.Country ?? member.Country;
       member.User.Name = updateProfile_DTO.Name ?? member.User.Name;
-
-
       imemberRepository.Update(member);
       if (await imemberRepository.SaveAllAsync()) return Ok("Request successful!");
       return BadRequest("Failed to Update the profile!");

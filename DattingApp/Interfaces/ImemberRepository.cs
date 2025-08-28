@@ -8,7 +8,7 @@ public interface ImemberRepository
 {
     void Update(Profie_members profie_Members);
     Task<bool> SaveAllAsync();
-    Task<PaginatedResult<Profie_members>> GetMembersAsync(PaginationParams paginationParams);
+    Task<PaginatedResult<Profie_members>> GetMembersAsync(MemberParams memberParams);
     Task<Profie_members?> GetMembersByIdAsync(string Id);
     Task<IReadOnlyList<Photo>> GetPhotosForMembersAsync(string MemberId);
     Task<Profie_members?> GetMemberForUpdate(string id);
