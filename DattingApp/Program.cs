@@ -20,6 +20,8 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<TokenInterface, TokenService>();
 builder.Services.AddScoped<IphotoService, PhotoService>();
 builder.Services.AddScoped<ImemberRepository, MembersRepository>();
+builder.Services.AddScoped<LogUserActivity>();
+builder.Services.AddScoped<ILikesRepository, LikesRepository>();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>

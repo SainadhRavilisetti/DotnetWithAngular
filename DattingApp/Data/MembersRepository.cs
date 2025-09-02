@@ -11,10 +11,10 @@ public class MembersRepository(ProfileDB profileDB) : ImemberRepository
 {
     public async Task<Profie_members?> GetMemberForUpdate(string id)
     {
-        return await profileDB.profie_Members
-        .Include(x => x.User)
-        .Include(x => x.Photos).
-        SingleOrDefaultAsync(x => x.Id == id);
+            return await profileDB.profie_Members
+            .Include(x => x.User)
+            .Include(x => x.Photos).
+            SingleOrDefaultAsync(x => x.Id == id);
     }
 
     public Task GetMemberForUpdate(object value)
@@ -34,10 +34,15 @@ public class MembersRepository(ProfileDB profileDB) : ImemberRepository
         if (memberParams.Gender != null)
         {
             query = query.Where(x => x.Gender == memberParams.Gender);
-        }
+        } 
         var minDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-memberParams.MaxAge - 1));
         var maxDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-memberParams.MinAge));
         query = query.Where(x => x.DateOfBirth >= minDob && x.DateOfBirth <= maxDob);
+        query = memberParams.OrderBy switch
+        {
+            "created" => query.OrderByDescending(x => x.Created),
+            _=>query.OrderByDescending(x=>x.LastActive)
+        };
         return await PaginatedHelper.CreateAsync(query, memberParams.PageNumber, memberParams.PageSize);
     }
 

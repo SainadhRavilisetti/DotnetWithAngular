@@ -15,7 +15,8 @@ public class Profile
     public required byte[] Passwordsalt { get; set; }
     [JsonIgnore]
     public List<Photo> photos { get; set; } = [];
+
     [JsonIgnore]
     [ForeignKey(nameof(Id))]
-    public Profie_members profie_Members { get; set; } = null!; 
+    public Profie_members profie_Members { get; set; } = null!;
 }

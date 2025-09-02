@@ -19,5 +19,9 @@ public class Profie_members
     public Profile User { get; set; } = null!;
     [JsonIgnore]
     public List<Photo> Photos { get; set; } = [];
+    [JsonIgnore]
+    public List<MemberLike> LikedByMembers { get; set; } = [];
+    [JsonIgnore]
+    public List<MemberLike> LikedMembers { get; set; } = [];
 
 }
