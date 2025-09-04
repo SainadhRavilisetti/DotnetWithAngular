@@ -1,38 +1,67 @@
 using System;
 using DattingApp.Entites;
+using DattingApp.Helpers;
 using DattingApp.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
 
 namespace DattingApp.Data;
 
-public class LikesRepository : ILikesRepository
+public class LikesRepository(ProfileDB context) : ILikesRepository
 {
     public void AddLike(MemberLike like)
     {
-        throw new NotImplementedException();
+        context.Likes.Add(like);
     }
 
     public void DeleteLike(MemberLike like)
     {
-        throw new NotImplementedException();
+        context.Likes.Remove(like);
     }
 
-    public Task<IReadOnlyList<string>> GetCurrentMemberLinkIds(string memberId)
+    public async Task<IReadOnlyList<string>> GetCurrentMemberLinkIds(string memberId)
     {
-        throw new NotImplementedException();
+        return await context.Likes
+        .Where(x => x.SourceMemberId == memberId)
+        .Select(x => x.TargetMemberId)
+        .ToListAsync();
+
     }
 
-    public Task<MemberLike> GetMemberLike(string SourceMemberId, string TargetMemberId)
+    public async Task<MemberLike?> GetMemberLike(string SourceMemberId, string TargetMemberId)
     {
-        throw new NotImplementedException();
+        return await context.Likes.FindAsync(SourceMemberId, TargetMemberId);
     }
 
-    public Task<IReadOnlyList<Profie_members>> GetMemberLikes(string predicate, string memberId)
+    public async Task<PaginatedResult<Profie_members>> GetMemberLikes(LikesParams likesParams)
     {
-        throw new NotImplementedException();
+        var query = context.Likes.AsQueryable();
+        IQueryable<Profie_members> results;
+        switch (likesParams.Predicate)
+        {
+            case "liked":
+                results = query
+                .Where(x => x.SourceMemberId == likesParams.MemberId)
+                .Select(x => x.TargetMember);
+                break;
+            case "likedBy":
+                results = query
+                .Where(x => x.TargetMemberId == likesParams.MemberId)
+                .Select(x => x.SourceMember);
+                break;
+            default://mutual
+                var likeIds = await GetCurrentMemberLinkIds(likesParams.MemberId);
+                results = query
+                     .Where(x => x.TargetMemberId == likesParams.MemberId && likeIds.Contains(x.SourceMemberId))
+                     .Select(x => x.SourceMember);
+                break;
+
+        }
+        return await PaginatedHelper.CreateAsync(results, likesParams.PageNumber, likesParams.PageSize);
     }
 
-    public Task<bool> SaveAllChanges()
+    public async Task<bool> SaveAllChanges()
     {
-        throw new NotImplementedException();
+        return await context.SaveChangesAsync() > 0;
     }
 }
