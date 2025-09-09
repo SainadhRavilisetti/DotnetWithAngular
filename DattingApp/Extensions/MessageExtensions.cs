@@ -20,7 +20,7 @@ public static class MessageExtensions
             RecipientImgUrl = message.Recipient.ImgUrl,
             Content = message.Content,
             DateRead = message.DateRead,
-            MessageSent = message.MessageSent
+            MessageSent = message.MessageSent 
         };
     }
     public static Expression<Func<Message, Messages_DTO>> ToDtoProjection()

@@ -5,7 +5,9 @@ using DattingApp.Entites;
 using DattingApp.Extensions;
 using DattingApp.Helpers;
 using DattingApp.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace DattingApp.Controller;
 
@@ -38,6 +40,11 @@ public class MessageController(IMessageRepository messageRepository, ImemberRepo
     {
         messageParams.MemberId = User.GetMemberId();
         return await messageRepository.GetMessageForMember(messageParams);
+    }
+    [HttpGet("thread/{recipientId}")]
+    public async Task<ActionResult<IReadOnlyList<Messages_DTO>>> GetMessageTread(string recipientId)
+    {
+        return Ok(await messageRepository.GetMessageThread(User.GetMemberId(), recipientId));
     }
 
 }

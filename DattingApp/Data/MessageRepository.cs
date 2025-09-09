@@ -4,6 +4,7 @@ using DattingApp.Entites;
 using DattingApp.Extensions;
 using DattingApp.Helpers;
 using DattingApp.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace DattingApp.Data;
 
@@ -38,9 +39,17 @@ public class MessageRepository(ProfileDB context) : IMessageRepository
         return await PaginatedHelper.CreateAsync(messageQuery, messageParams.PageNumber, messageParams.PageSize);
     }
 
-    public Task<IReadOnlyList<Messages_DTO>> GetMessageThread(string currentMemberId, string recipientId)
+    public async Task<IReadOnlyList<Messages_DTO>> GetMessageThread(string currentMemberId, string recipientId)
     {
-        throw new NotImplementedException();
+        await context.Messages
+        .Where(x => x.RecipientId == currentMemberId && x.SenderId == recipientId && x.DateRead == null)
+        .ExecuteUpdateAsync(setters => setters.SetProperty(x => x.DateRead, DateTime.UtcNow));
+        return await context.Messages
+        .Where(x => (x.RecipientId == currentMemberId && x.SenderId == recipientId)
+        || (x.SenderId == currentMemberId && x.RecipientId == recipientId))
+        .OrderBy(x => x.MessageSent)
+        .Select(MessageExtensions.ToDtoProjection())
+        .ToListAsync();
     }
 
     public async Task<bool> SaveAllAsync()
