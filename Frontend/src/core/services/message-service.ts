@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { PaginationResult } from '../../types/pagination';
 import { Message } from '../../types/message';
+import { connect } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,5 +17,14 @@ export class MessageService {
     params=params.append('pageSize',pageSize);
     params=params.append('container',container);
     return this.http.get<PaginationResult<Message>>(this.baseUrl+'message',{params});
+  }
+  getMessageTread(memberId:string){
+    return this.http.get<Message[]>(this.baseUrl+'message/thread/'+memberId);
+  }
+  sendMessage(recipientId:string,content:string){
+    return this.http.post<Message>(this.baseUrl+ 'message',{recipientId,content})
+  }
+  deleteMessage(id:string){
+    return this.http.delete(this.baseUrl+'message/'+id);
   }
 }

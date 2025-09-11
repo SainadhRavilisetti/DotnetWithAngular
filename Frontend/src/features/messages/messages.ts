@@ -23,6 +23,7 @@ export class Messages implements OnInit {
     { label: 'Inbox', value: 'Inbox' },
     { label: 'Outbox', value: 'Outbox' },
   ];
+message: any;
   ngOnInit(): void {
     this.loadMessages();
   }
@@ -47,5 +48,24 @@ export class Messages implements OnInit {
     this.pageNumber = event.pageNumber;
     this.pageSize = event.pageSize;
     this.loadMessages();
+  }
+  deleteMessage(event:Event ,id:string){
+    event.stopPropagation();
+    this.messageService.deleteMessage(id).subscribe({
+      next:()=>{
+        this.loadMessages();
+        const current=this.paginationMessages();
+        if(current?.items){
+          this.paginationMessages.update(prev=>{
+            if(!prev){return null;}
+            const newItems=prev.items.filter(x=>x.id!==id) || [];
+            return {
+              items:newItems,
+              metadata:prev.metadata
+            }
+          })
+        }
+      }
+    })
   }
 }

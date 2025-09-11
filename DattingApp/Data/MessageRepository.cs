@@ -32,8 +32,8 @@ public class MessageRepository(ProfileDB context) : IMessageRepository
         .AsQueryable();
         query = messageParams.Container switch
         {
-            "Outbox" => query.Where(x => x.SenderId == messageParams.MemberId),
-            _ => query.Where(x => x.RecipientId == messageParams.MemberId)
+            "Outbox" => query.Where(x => x.SenderId == messageParams.MemberId  && x.SenderDeleted==false),
+            _ => query.Where(x => x.RecipientId == messageParams.MemberId && x.RecipientDeleted==false)
         };
         var messageQuery = query.Select(MessageExtensions.ToDtoProjection());
         return await PaginatedHelper.CreateAsync(messageQuery, messageParams.PageNumber, messageParams.PageSize);
