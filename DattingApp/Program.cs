@@ -46,6 +46,7 @@ app.UseMiddleware<ExceptionMIddleware>();
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:4200", "https://localhost:4200","http://www.attheratedollor.shop/","https://www.attheratedollor.shop/"));
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseForwardedHeaders();
 app.MapControllers();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
