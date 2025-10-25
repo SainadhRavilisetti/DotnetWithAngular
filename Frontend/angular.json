@@ -11,16 +11,16 @@
           "path": "src"
         },
         "@schematics/angular:service": {
-          "skipTests":true,
+          "skipTests": true,
           "path": "src/core/services"
         },
         "@schematics/angular:guard": {
           "skipTests": true,
-          "path":"src/core/guards"
+          "path": "src/core/guards"
         },
         "@schematics/angular:interceptor": {
           "skipTests": true,
-          "path":"src/core/interceptors"
+          "path": "src/core/interceptors"
         },
         "@schematics/angular:resolver": {
           "skipTests": true,
@@ -28,9 +28,8 @@
         },
         "@schematics/angular:pipe": {
           "skipTests": true,
-          "path":"src/core/pipes"
+          "path": "src/core/pipes"
         }
-
       },
       "root": "",
       "sourceRoot": "src",
@@ -83,6 +82,14 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "host": "0.0.0.0",
+            "port": 4200,
+            "allowedHosts": [
+              "www.attheratedollor.shop",
+              "attheratedollor.shop"
+            ]
+          },
           "configurations": {
             "production": {
               "buildTarget": "Frontend:build:production"
