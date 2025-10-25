@@ -13,7 +13,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace DattingApp.Controller
 {
-  //[Authorize]
+  [Authorize]
   public class ProfileController(ImemberRepository imemberRepository, IphotoService iphotoService) : MainController
   {
     [HttpGet]
