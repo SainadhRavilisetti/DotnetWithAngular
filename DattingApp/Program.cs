@@ -43,7 +43,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddCors();
 var app = builder.Build();
 app.UseMiddleware<ExceptionMIddleware>();
-app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:4200", "https://localhost:4200","http://3.88.138.124"));
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:4200", "https://localhost:4200","http://www.attheratedollor.shop:5002/"));
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
