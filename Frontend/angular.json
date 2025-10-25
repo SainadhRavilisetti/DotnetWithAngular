@@ -36,12 +36,6 @@
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
-              "serve": {
-        "options": {
-          "host": "0.0.0.0",
-          "disableHostCheck": true,
-          "port": 4200
-        }
         "build": {
           "builder": "@angular/build:application",
           "options": {
