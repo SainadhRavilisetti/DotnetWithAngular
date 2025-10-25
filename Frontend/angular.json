@@ -4,6 +4,12 @@
   "newProjectRoot": "projects",
   "projects": {
     "Frontend": {
+      "serve": {
+        "options": {
+          "host": "0.0.0.0",
+          "disableHostCheck": true,
+          "port": 4200
+        }
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
