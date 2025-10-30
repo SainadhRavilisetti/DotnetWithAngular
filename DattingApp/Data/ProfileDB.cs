@@ -11,6 +11,8 @@ public class ProfileDB(DbContextOptions options) : DbContext(options)
     public DbSet<Profie_members> profie_Members { get; set; }
 
     public DbSet<Photo> photos { get; set; }
+    public DbSet<MemberLike> Likes{ get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -24,11 +26,11 @@ public class ProfileDB(DbContextOptions options) : DbContext(options)
         .HasForeignKey(s => s.SourceMemberId)
         .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<MemberLike>()
-       .HasOne(s => s.TargetMember)
-       .WithMany(t => t.LikedByMembers)
-       .HasForeignKey(s => s.TargetMemberId)
-       .OnDelete(DeleteBehavior.NoAction);
+         modelBuilder.Entity<MemberLike>()
+        .HasOne(s => s.TargetMember)
+        .WithMany(t => t.LikedByMembers)
+        .HasForeignKey(s => s.TargetMemberId)   
+        .OnDelete(DeleteBehavior.NoAction);
 
         var dateTimeConverter = new ValueConverter<DateTime, DateTime>
         (
