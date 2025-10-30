@@ -21,7 +21,7 @@ public class ProfileDB(DbContextOptions options) : DbContext(options)
         modelBuilder.Entity<Message>()
         .HasOne(x => x.Recipient)
         .WithMany(m => m.MessagesReceived)
-        .OnDelete(DeleteBehavior.Cascade);
+        .OnDelete(DeleteBehavior.Cascade); 
 
         modelBuilder.Entity<Message>()
         .HasOne(x => x.Sender)
