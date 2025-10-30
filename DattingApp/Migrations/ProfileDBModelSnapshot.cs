@@ -15,7 +15,7 @@ namespace DattingApp.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.7");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
 
             modelBuilder.Entity("DattingApp.Entites.MemberLike", b =>
                 {
@@ -34,7 +34,7 @@ namespace DattingApp.Migrations
 
             modelBuilder.Entity("DattingApp.Entites.Message", b =>
                 {
-                    b.Property<string>("id")
+                    b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Content")
@@ -61,7 +61,7 @@ namespace DattingApp.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("RecipientId");
 
